@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/meta-knight/Desktop/programming/Zebi/OCR/CPP",
+  "command": "/usr/bin/c++    -I/usr/include/ImageMagick-6 -I/usr/include/x86_64-linux-gnu/ImageMagick-6 -I/usr/include/leptonica -I/usr/include/tesseract -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11   -o CMakeFiles/OCR-OpenCV-Tesseract.dir/main.cpp.o -c /home/meta-knight/Desktop/programming/Zebi/OCR/CPP/main.cpp",
+  "file": "/home/meta-knight/Desktop/programming/Zebi/OCR/CPP/main.cpp"
+},
+{
+  "directory": "/home/meta-knight/Desktop/programming/Zebi/OCR/CPP",
+  "command": "/usr/bin/c++    -I/usr/include/ImageMagick-6 -I/usr/include/x86_64-linux-gnu/ImageMagick-6 -I/usr/include/leptonica -I/usr/include/tesseract -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11   -o CMakeFiles/OCR-OpenCV-Tesseract.dir/cropper.cpp.o -c /home/meta-knight/Desktop/programming/Zebi/OCR/CPP/cropper.cpp",
+  "file": "/home/meta-knight/Desktop/programming/Zebi/OCR/CPP/cropper.cpp"
+},
+{
+  "directory": "/home/meta-knight/Desktop/programming/Zebi/OCR/CPP",
+  "command": "/usr/bin/c++    -I/usr/include/ImageMagick-6 -I/usr/include/x86_64-linux-gnu/ImageMagick-6 -I/usr/include/leptonica -I/usr/include/tesseract -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11   -o CMakeFiles/OCR-OpenCV-Tesseract.dir/skew.cpp.o -c /home/meta-knight/Desktop/programming/Zebi/OCR/CPP/skew.cpp",
+  "file": "/home/meta-knight/Desktop/programming/Zebi/OCR/CPP/skew.cpp"
+}
+]
