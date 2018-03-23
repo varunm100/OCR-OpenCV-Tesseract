@@ -26,7 +26,7 @@ TextData getTextFromImage(string ImagePath) {
 	tesseract::TessBaseAPI *tess = new tesseract::TessBaseAPI();
 	tess->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
 	//tess->setVariable("tessedit_char_whitelist", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>.=");
-	if (tess->Init("Langs/", "eng+hin")) {
+	if (tess->Init(NULL, "eng+hin")) {
 		cout << "!!english language file not found!!" << endl;
 		exit(1);
 	}
