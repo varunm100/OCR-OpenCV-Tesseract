@@ -1,3 +1,0 @@
-/home/meta-knight/Desktop/programming/Zebi/OCR/CPP/CMakeFiles/edit_cache.dir
-/home/meta-knight/Desktop/programming/Zebi/OCR/CPP/CMakeFiles/OCR-OpenCV-Tesseract.dir
-/home/meta-knight/Desktop/programming/Zebi/OCR/CPP/CMakeFiles/rebuild_cache.dir
