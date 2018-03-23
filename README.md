@@ -1,4 +1,3 @@
 OCR-OpenCV-Tesseract
 
-sudo mv eng.traineddata /usr/local/share/tessdata
-sudo mv hin.traineddata /usr/local/share/tessdata
+g++ *.cpp -std=gnu++11 -o OCR-OpenCV-Tesseract -llept -ltesseract `pkg-config --cflags --libs opencv` <-- To compile <--
