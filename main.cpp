@@ -11,7 +11,7 @@ vector<Rect> Crop(Mat imageData);
 TextData getTextFromImage(string ImagePath);
 
 int main() {
-	string imgPath = "TestCases/test7.jpeg";;
+	string imgPath = "TestCases/test9.jpg";;
 	TextData data = getTextFromImage(imgPath);
 	/*for (int i = 0; i < data.Text.size(); ++i) {
 		cout << data.Text[i];
@@ -34,6 +34,7 @@ TextData getTextFromImage(string ImagePath) {
 	imshow("Original Image", imread(ImagePath));
 	Mat skewedImage = (skewObj->GetSkewedImage(ImagePath)).image;
 	Mat copyTemp = skewedImage.clone();
+	imwrite("Deskewed10.jpg", copyTemp);
 	imshow("Deskewed Image", skewedImage);
 	waitKey(0);
 	Mat gray;
