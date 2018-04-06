@@ -32,13 +32,7 @@ BoundingBoxesData Cropper::MSERGuassianBin(string imagePath) {
 }
 
 BoundingBoxesData Cropper::MSERGuassianBin(Mat inImage) {
-	Mat image = inImage;
-	imshow("GreyScaledImage", image);
-	waitKey(0);
-	Ptr<MSER> mserObj = MSER::create();
-	vector <vector<Point> > regions;
-	vector <Rect> mser_bbox;
-	mserObj->detectRegions(image, regions, mser_bbox);
-	BoundingBoxesData rectData = { mser_bbox , regions };
-	return rectData;
+	string ImagePath = "TEMP/t.png";
+	imwrite(ImagePath, inImage);
+	return Cropper::MSERGuassianBin(ImagePath);
 }

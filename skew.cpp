@@ -114,6 +114,7 @@ void Skew::ShowBeforeAfter(string filePath) {
 	imshow("Original", im);
     Mat gray;
     cvtColor(im,gray,CV_BGR2GRAY);
+    //imwrite("Other/output.tiff", preprocess1(gray));
     Mat preprocessed = preprocess2(gray);
     imshow("Preprocessed",preprocessed);
     double skew;

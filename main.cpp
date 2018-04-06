@@ -4,37 +4,35 @@
 struct TextData {
 	vector<string> Text;
 	vector<Rect> BoundingBoxes;
-	std::vector<float> Confidence;
+	vector<float> Confidence;
 };
 
 vector<Rect> Crop(Mat imageData);
 TextData getTextFromImage(string ImagePath);
 
 int main() {
-	string imgPath = "TestCases/test9.jpg";;
+	string imgPath = "TestCases/test16.jpg";
 	TextData data = getTextFromImage(imgPath);
-	/*for (int i = 0; i < data.Text.size(); ++i) {
+	cout << "__Text Output__" << endl;
+	for (int i = 0; i < data.Text.size(); ++i) {
 		cout << data.Text[i];
 	}
-	cout << endl;*/
+	cout << endl;
 	return 0;
 }
 
 TextData getTextFromImage(string ImagePath) {
-	Mat kernel = (Mat_<int>(3, 3) << 0, 1, 0,1, -1, 1,0, 1, 0);
 	Skew* skewObj = new Skew();
 	tesseract::TessBaseAPI *tess = new tesseract::TessBaseAPI();
 	tess->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
-	//tess->setVariable("tessedit_char_whitelist", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>.=");
-	if (tess->Init(NULL, "eng+hin")) {
+	if (tess->Init(NULL, "eng")) {
 		cout << "!!english language file not found!!" << endl;
 		exit(1);
 	}
-	//Ptr<OCRTesseract> ocr = OCRTesseract::create();
 	imshow("Original Image", imread(ImagePath));
 	Mat skewedImage = (skewObj->GetSkewedImage(ImagePath)).image;
 	Mat copyTemp = skewedImage.clone();
-	imwrite("Deskewed10.jpg", copyTemp);
+	imwrite("Deskewed.jpg", copyTemp);
 	imshow("Deskewed Image", skewedImage);
 	waitKey(0);
 	Mat gray;
@@ -43,35 +41,30 @@ TextData getTextFromImage(string ImagePath) {
 	vector<float> confidence;
 	string tempFileName = "TEMP/temp.tiff";
 	for (int i = 0; i < TextBoxes.size(); ++i) {
-		//Mat tempImage = (skewObj->GetSkewedImage(skewedImage(TextBoxes[i]))).image;
 		Mat tempImage = skewedImage(TextBoxes[i]);
-		//cvtColor(tempImage, tempImage, CV_BGR2GRAY);
 		resize(tempImage, tempImage, Size(tempImage.size().width*3,tempImage.size().height*3));
 		imwrite(tempFileName, tempImage);
-		string command = "./textcleaner -g -e normalize -f 100	 -o 12 -s 2 " + tempFileName + " " + tempFileName;
-		system(command.c_str());
-		tempImage = imread(tempFileName.c_str());
-		cvtColor(tempImage, tempImage, CV_BGR2GRAY);
-		//floodFill(tempImage, Point(10,10), Scalar(255.0, 255.0, 255.0));
-		//threshold(tempImage, tempImage, 0.0, 255.0, THRESH_BINARY | THRESH_OTSU);
+		//string TessCommand = "tesseract " + tempFileName + " " + "TEMP/TXToutput" + " --oem 1 -l eng"; 
+		//system(TessCommand.c_str());
 		
-		tess->SetImage((uchar*)tempImage.data, tempImage.size().width, tempImage.size().height, tempImage.channels(), tempImage.step1());
-		tess->Recognize(0);
+		//string command = "./textcleaner -g -e normalize -f 100	 -o 12 -s 2 " + tempFileName + " " + tempFileName;
+		//system(command.c_str());
+		tempImage = imread(tempFileName.c_str());
 
-		string output;
-		vector<Rect>   boxes;
-		vector<string> words;
-		vector<float>  confidences;
-		//ocr->run(tempImage, output, &boxes, &words, &confidences, OCR_LEVEL_WORD);
-		/*for (int j = 0; j < words.size(); ++j) {
-			cout << words[j] << " Confidence: " << confidences[j] << endl;
-		}*/
-
-		TextVec.push_back(tess->GetUTF8Text());
-		confidence.push_back(tess->MeanTextConf());
-		cout << TextVec.back() << " Confidence: " << confidence.back() << endl;
-		imshow(tempFileName, tempImage);
-		waitKey(0);
+		cvtColor(tempImage, tempImage, CV_BGR2GRAY);
+		threshold(tempImage, tempImage, 0.0, 255.0, THRESH_BINARY | THRESH_OTSU);
+		imwrite(tempFileName, tempImage);
+		try {	
+			tess->SetImage((uchar*)tempImage.data, tempImage.size().width, tempImage.size().height, tempImage.channels(), tempImage.step1());
+			tess->Recognize(0);
+			TextVec.push_back(tess->GetUTF8Text());
+			confidence.push_back(tess->MeanTextConf());
+			cout << TextVec.back() << " Confidence: " << confidence.back() << endl;
+			imshow(tempFileName, tempImage);
+			waitKey(0);
+		} catch (const string& TesseractException) {
+			cout << "Caught Exception: " << TesseractException << endl;
+		}
 		remove(tempFileName.c_str());
 		bool failed = !std::ifstream(tempFileName.c_str());
 		if (!failed) { cout << "FAILED TO DELETE FILE!!!|  " << i << endl; }
@@ -79,7 +72,6 @@ TextData getTextFromImage(string ImagePath) {
 	}
 	TextData data = { TextVec , TextBoxes , confidence };
 	return data;
-	//g++ *.cpp -std=gnu++11 -o OCR-OpenCV-Tesseract -llept -ltesseract `pkg-config --cflags --libs opencv`
 }
 
 vector<Rect> Crop(Mat imageData) {
@@ -91,7 +83,7 @@ vector<Rect> Crop(Mat imageData) {
 	Mat small;
 	cvtColor(rgb, small, CV_BGR2GRAY);
 	Mat grad;
-	//10,4
+	//10,4 - ||Optimal For Now||
 	Mat morphKernel = getStructuringElement(MORPH_ELLIPSE, Size(10,4));
 	morphologyEx(small, grad, MORPH_GRADIENT, morphKernel);
 	Mat bw;
@@ -134,3 +126,4 @@ vector<Rect> Crop(Mat imageData) {
 	waitKey(0);
 	return BoundingBoxes;
 }
+//g++ *.cpp -std=gnu++11 -o OCR-OpenCV-Tesseract -llept -ltesseract `pkg-config --cflags --libs opencv`
