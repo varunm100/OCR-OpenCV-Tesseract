@@ -11,7 +11,7 @@ vector<Rect> Crop(Mat imageData);
 TextData getTextFromImage(string ImagePath);
 
 int main() {
-	string imgPath = "TestCases/test16.jpg";
+	string imgPath = "TestCases/test14.jpg";
 	TextData data = getTextFromImage(imgPath);
 	cout << "__Text Output__" << endl;
 	for (int i = 0; i < data.Text.size(); ++i) {
@@ -47,12 +47,12 @@ TextData getTextFromImage(string ImagePath) {
 		//string TessCommand = "tesseract " + tempFileName + " " + "TEMP/TXToutput" + " --oem 1 -l eng"; 
 		//system(TessCommand.c_str());
 		
-		//string command = "./textcleaner -g -e normalize -f 100	 -o 12 -s 2 " + tempFileName + " " + tempFileName;
-		//system(command.c_str());
+		string command = "./textcleaner -g -e normalize -f 100	 -o 12 -s 2 " + tempFileName + " " + tempFileName;
+		system(command.c_str());
 		tempImage = imread(tempFileName.c_str());
 
 		cvtColor(tempImage, tempImage, CV_BGR2GRAY);
-		threshold(tempImage, tempImage, 0.0, 255.0, THRESH_BINARY | THRESH_OTSU);
+		//threshold(tempImage, tempImage, 0.0, 255.0, THRESH_BINARY | THRESH_OTSU);
 		imwrite(tempFileName, tempImage);
 		try {	
 			tess->SetImage((uchar*)tempImage.data, tempImage.size().width, tempImage.size().height, tempImage.channels(), tempImage.step1());
@@ -122,7 +122,7 @@ vector<Rect> Crop(Mat imageData) {
 		}
 	}
 	imwrite("final.png", rgb);
-	imshow("Cropped Image", rgb);
+	imshow("Text Detection", rgb);
 	waitKey(0);
 	return BoundingBoxes;
 }
